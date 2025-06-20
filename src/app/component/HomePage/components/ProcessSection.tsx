@@ -4,7 +4,8 @@ import { FileText, Users, Award, CheckCircle } from 'lucide-react';
 
 const ProcessSection = () => {
   const [visibleSteps, setVisibleSteps] = useState(new Set());
-  const observerRef = useRef(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
 
   const steps = [
     {
