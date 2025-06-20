@@ -1,5 +1,5 @@
 // controllers/admin.controller.ts
-import { dbConnect } from '@/lib/dbConnect';
+import { dbConnect } from "@/lib/dbConnect"
 import { Admin } from '@/models/Admin.models';
 import { comparePassword } from '@/utils/hash';
 import { signToken } from '@/utils/jwt'; // ✅ Correct import
