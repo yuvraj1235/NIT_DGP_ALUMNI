@@ -1,20 +1,22 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-export async function dbConnect(){
+
+export async function connect() {
     try {
-        mongoose.connect(process.env.MONGODB_URI!)
-
-        const connection = mongoose.connection
-        connection.on("connected", () => {
-            console.log("Mongodb Connected Succesfully")
+        mongoose.connect(process.env.MONGODB_URL!);
+        const connection =mongoose.connection;
+        connection.on('connected',()=>{
+            console.log("MongoDB connected successfully");
+            
         })
-
-        connection.on("errors",(err) => {
-            console.log("Error occured while connecting to the mongodb",err)
-            process.exit()
-         })
-        
+        connection.on('error',(err)=>{
+            console.log("MONGO db connection failled:",err);
+            process.exit;
+            
+        })
     } catch (error) {
-        console.log("Something is not right",error)
+        console.log("Something went wrong whilte db connection");
+        console.log(error);
+        
     }
 }
