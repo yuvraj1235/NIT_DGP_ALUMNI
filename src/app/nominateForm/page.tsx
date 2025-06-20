@@ -574,9 +574,9 @@ const handleFileChange = (
                         variant="ghost"
                         size="sm"
                         onClick={() => removeFile('cv')}
-                        className="text-red-400 hover:text-red-300 hover:bg-red-400/10"
+                        className="text-red-400 hover:text-red-300  hover:bg-red-400/10"
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-4 h-4 text-white" />
                       </Button>
                     </div>
                   )}
