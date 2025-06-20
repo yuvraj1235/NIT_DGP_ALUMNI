@@ -150,8 +150,10 @@ const NominationForm: React.FC = () => {
           </p>
         </div>
 
+
         {/* Form Section */}
         <Form />
+
 
         {/* Footer */}
         <footer className="mt-16 text-center space-y-4 animate-on-scroll">
