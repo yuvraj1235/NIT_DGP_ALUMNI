@@ -4,7 +4,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { FileText, Users, Award, CheckCircle } from "lucide-react";
 
 const ProcessSection = () => {
-  const [visibleSteps, setVisibleSteps] = useState<Set<number>>(new Set());
+
+  const [visibleSteps, setVisibleSteps] = useState(new Set());
+
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const steps = [
@@ -38,15 +40,50 @@ const ProcessSection = () => {
     },
   ];
 
+  // useEffect(() => {
+  //   observerRef.current = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           setVisibleSteps(prev => new Set([...prev, parseInt(entry.target.dataset.stepId)]));
+  //         }
+  //       });
+  //     },
+  //     { threshold: 0.3 }
+  //   );
+
+  //   const stepElements = document.querySelectorAll('[data-step-id]');
+  //   stepElements.forEach(step => observerRef.current.observe(step));
+
+  //   return () => {
+  //     if (observerRef.current) {
+  //       observerRef.current.disconnect();
+  //     }
+  //   };
+  // }, []);
+
+  // const getColorClasses = (color) => {
+  //   const colors = {
+  //     blue: 'bg-blue-500/20 border-blue-500/30 text-blue-400',
+  //     emerald: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400',
+  //     purple: 'bg-purple-500/20 border-purple-500/30 text-purple-400',
+  //     yellow: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-400'
+  //   };
+  //   return colors[color] || colors.blue;
+  // };
+
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+
+            // Cast to HTMLElement to access dataset
             const target = entry.target as HTMLElement;
             const stepId = target.dataset.stepId;
             if (stepId) {
-              setVisibleSteps((prev) => new Set([...prev, parseInt(stepId)]));
+              setVisibleSteps(prev => new Set([...prev, parseInt(stepId)]));
+
             }
           }
         });
@@ -54,24 +91,33 @@ const ProcessSection = () => {
       { threshold: 0.3 }
     );
 
-    const stepElements = document.querySelectorAll("[data-step-id]");
-    stepElements.forEach((step) => observerRef.current?.observe(step));
+
+    const stepElements = document.querySelectorAll('[data-step-id]');
+    stepElements.forEach(step => {
+      // Check if observerRef.current exists before using it
+      if (observerRef.current) {
+        observerRef.current.observe(step);
+      }
+    });
+
 
     return () => {
       observerRef.current?.disconnect();
     };
   }, []);
 
+
+  // Type the color parameter properly
   const getColorClasses = (color: string) => {
     const colors: Record<string, string> = {
-      blue: "bg-blue-500/20 border-blue-500/30 text-blue-400",
-      emerald: "bg-emerald-500/20 border-emerald-500/30 text-emerald-400",
-      purple: "bg-purple-500/20 border-purple-500/30 text-purple-400",
-      yellow: "bg-yellow-500/20 border-yellow-500/30 text-yellow-400",
+      blue: 'bg-blue-500/20 border-blue-500/30 text-blue-400',
+      emerald: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400',
+      purple: 'bg-purple-500/20 border-purple-500/30 text-purple-400',
+      yellow: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-400'
+
     };
     return colors[color] || colors.blue;
   };
-
   return (
     <section id="process" className="py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -104,21 +150,17 @@ const ProcessSection = () => {
                   )}
 
                   <div
-                    data-step-id={index.toString()}
-                    className={`flex flex-col lg:flex-row items-center gap-8 ${
-                      isEven ? "lg:flex-row" : "lg:flex-row-reverse"
-                    }`}
+
+                    data-step-id={index}
+                    className={`flex flex-col lg:flex-row items-center gap-8 ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'
+                      }`}
                   >
                     {/* Step Content */}
-                    <div
-                      className={`flex-1 transition-all duration-700 ${
-                        isVisible
-                          ? "opacity-100 translate-x-0"
-                          : `opacity-0 ${
-                              isEven ? "-translate-x-10" : "translate-x-10"
-                            }`
-                      }`}
-                    >
+                    <div className={`flex-1 transition-all duration-700 ${isVisible
+                      ? 'opacity-100 translate-x-0'
+                      : `opacity-0 ${isEven ? '-translate-x-10' : 'translate-x-10'}`
+                      }`}>
+
                       <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 hover:border-gray-600 transition-colors">
                         <div className="flex items-center mb-4">
                           <span className="text-2xl font-bold text-gray-500 mr-4">
@@ -135,17 +177,11 @@ const ProcessSection = () => {
                     </div>
 
                     {/* Step Icon */}
-                    <div
-                      className={`relative transition-all duration-700 ${
-                        isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
-                      }`}
-                      style={{ transitionDelay: "200ms" }}
-                    >
-                      <div
-                        className={`w-16 h-16 rounded-full border-2 flex items-center justify-center ${getColorClasses(
-                          step.color
-                        )}`}
-                      >
+
+                    <div className={`relative transition-all duration-700 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                      }`} style={{ transitionDelay: '200ms' }}>
+                      <div className={`w-16 h-16 rounded-full border-2 flex items-center justify-center ${getColorClasses(step.color)}`}>
+
                         <Icon className="h-8 w-8" />
                       </div>
 
@@ -170,9 +206,9 @@ const ProcessSection = () => {
             Selection Timeline
           </h3>
           <p className="text-gray-300 text-center leading-relaxed">
-            The entire selection process is designed to be completed within 3-4
-            months from the nomination deadline, ensuring a thorough yet
-            efficient evaluation of all candidates.
+            The entire selection process is designed to be completed within 3-4 months from the nomination deadline,
+            ensuring a thorough yet efficient evaluation of all candidates.
+
           </p>
         </div>
       </div>
