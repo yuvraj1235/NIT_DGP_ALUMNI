@@ -18,18 +18,10 @@ export async function middleware(request: NextRequest) {
     }
     return NextResponse.next();
   }
-
-  // If token exists, verify it
-  try {
-    await verifyToken(token); // throws if invalid
-    if (isPublicPath) {
-      return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-    }
-    return NextResponse.next();
-  } catch (err) {
-    // Token invalid
-    return NextResponse.redirect(new URL('/admin/login', request.url));
+if(isPublicPath && token) {
+    return NextResponse.redirect(new URL('/', request.nextUrl))
   }
+
 }
 
 export const config = {
