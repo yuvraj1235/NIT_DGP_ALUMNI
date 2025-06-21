@@ -1,14 +1,8 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import toast, { Toaster } from "react-hot-toast";
-import { ArrowUp, Upload, Check, Mail, X } from 'lucide-react';
+import { ArrowUp, Mail } from 'lucide-react';
 import Form from "./components/Form"
 
 interface FormData {
@@ -102,7 +96,7 @@ const NominationForm: React.FC = () => {
     return () => observerRef.current?.disconnect();
   }, []);
 
- 
+
 
   return (
     <div className="min-h-screen bg-slate-900  relative overflow-hidden">
@@ -138,7 +132,7 @@ const NominationForm: React.FC = () => {
             <span className="text-emerald-400 text-sm font-medium">NIT Durgapur - CAAIR Cell</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-emerald-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl pb-1 font-bold mb-4 bg-gradient-to-r from-emerald-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent">
             Distinguished Alumni Award
           </h1>
           <h2 className="text-2xl md:text-3xl font-semibold text-slate-200 mb-4">
@@ -170,12 +164,16 @@ const NominationForm: React.FC = () => {
         </footer>
 
         {/* Scroll to Top Button */}
-        <Button
-          className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 backdrop-blur-sm transition-all duration-300"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        {/* <Button
+          className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 backdrop-blur-sm transition-all duration-300"
+          onClick={() => {
+            console.log("scroll clicked");
+            console.log("Window scrollY:", window.scrollY);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         >
           <ArrowUp className="w-5 h-5 text-emerald-400" />
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
