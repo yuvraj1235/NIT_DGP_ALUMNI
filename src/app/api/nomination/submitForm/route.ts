@@ -13,8 +13,8 @@ export async function POST(req: NextRequest) {
     // Extract fields
     const jsonData = formData.get("data") as string;
 
-    
-    const parsedData = JSON.parse(jsonData); 
+
+    const parsedData = JSON.parse(jsonData);
 
 
     // getting all the files
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     // connect to the database
     await dbConnect();
-    
+
 
     // Upload files to Cloudinary
 
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       photoUrl?: string;
       supportingDocsUrls?: string[];
     } = {};
-    
+
     // Function to upload a file to Cloudinary
     const uploadToCloudinary = async (file: File) => {
       const arrayBuffer = await file.arrayBuffer();
@@ -42,7 +42,12 @@ export async function POST(req: NextRequest) {
 
       const uploaded = await new Promise<any>((resolve, reject) => {
         cloudinary.uploader
-          .upload_stream({ folder: "nominations" }, (err, result) => {
+          .upload_stream({
+            folder: "nominations",
+            resource_type: "auto",
+            type: "upload",
+            upload_preset:"Nominee_data",
+          }, (err, result) => {
             if (err) return reject(err);
             resolve(result);
           })
@@ -51,7 +56,7 @@ export async function POST(req: NextRequest) {
 
       return uploaded.secure_url;
     };
-    
+
     // Upload each file if it exists
     if (cv) uploadedFiles.cvUrl = await uploadToCloudinary(cv);
     if (photo) uploadedFiles.photoUrl = await uploadToCloudinary(photo);
@@ -60,7 +65,7 @@ export async function POST(req: NextRequest) {
         supportingDocs.map((doc) => uploadToCloudinary(doc))
       );
     }
-    
+
 
     // Merge uploaded URLs into  the proper data structure
     const finalData = {
@@ -98,11 +103,11 @@ export async function POST(req: NextRequest) {
       },
       documents: uploadedFiles,
     };
-    
+
     // Create the nomination in the database
     const result = await createNomination(finalData);
 
-    
+
 
     return NextResponse.json(result, { status: 201 });
   } catch (error: any) {

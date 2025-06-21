@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Regex for Indian mobile numbers
-const indianMobileRegex = /^[6-9]\d{9}$/;
+const indianMobileRegex = /^(?:\+91)?[6-9]\d{9}$/;
 
 export const nominationSchema = z.object({
   // NOMINATOR
